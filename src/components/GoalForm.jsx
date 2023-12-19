@@ -9,7 +9,6 @@ function GoalForm() {
 
   const onSubmit = (e) => {
     e.preventDefault()
-
     dispatch(createGoal({ text }))
     setText('')
   }
@@ -21,8 +20,8 @@ function GoalForm() {
           <label htmlFor='text'>Goal</label>
           <input
             type='text'
-            name='text'
-            id='text'
+            name='description'
+            id='description'
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
