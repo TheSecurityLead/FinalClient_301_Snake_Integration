@@ -10,7 +10,13 @@ function SnakeGame() {
     const [snake, setSnake] = useState([{ x: 10, y: 10 }]); // Example initial state
     const [food, setFood] = useState({ x: 20, y: 20 }); // Example initial state
     const [isGameActive, setIsGameActive] = useState(false);
-
+  const getRandomFoodPosition = () => {
+        const newFood = {
+            x: Math.floor(Math.random() * (canvasSize / boxSize)),
+            y: Math.floor(Math.random() * (canvasSize / boxSize)),
+        };
+        return newFood;
+    };
     // Game control functions
 const startGame = () => {
     setIsGameActive(true);
