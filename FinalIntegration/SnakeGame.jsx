@@ -6,6 +6,7 @@ import SoundManager from './SoundManager';
 
 function SnakeGame() {
     // State variables
+    const [soundEnabled, setSoundEnabled] = useState(true);
     const [currentScore, setCurrentScore] = useState(0);
     const [highScore, setHighScore] = useState(0);
     const [snake, setSnake] = useState([{ x: 10, y: 10 }]); // Example initial state
