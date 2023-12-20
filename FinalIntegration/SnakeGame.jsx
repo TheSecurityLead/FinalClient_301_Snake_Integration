@@ -127,15 +127,16 @@ function SnakeGame() {
                 isGameStarted={gameStarted}
                 hasSnakeTurned={hasSnakeTurned}
             />
-            <ScoreBoard currentScore={currentScore} highScore={highScore} />
+            
             <GameBoard snake={snake} food={food} />
-            <ControlPanel
-                onStart={startGame}
-                onPause={pauseGame}
-                onReset={resetGame}
-                onToggleSound={() => setSoundEnabled(!soundEnabled)}
-                soundEnabled={soundEnabled}
-            />
+            <GameControlsAndScore
+    onStart={startGame}
+    onPause={pauseGame}
+    onReset={resetGame}
+    currentScore={currentScore}
+    highScore={highScore}
+/>
+
         </div>
     );
 }
