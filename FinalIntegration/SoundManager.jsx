@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 function SoundManager({ soundEnabled }) {
-  // State to track whether a sound is currently playing
+  
   const [isPlayingSound, setIsPlayingSound] = useState(false);
 
   // Initialize audio elements
@@ -43,7 +43,7 @@ function SoundManager({ soundEnabled }) {
     };
   }, []);
 
-  // Render nothing because this component is purely for sound management
+  
   return null;
 }
 
