@@ -21,38 +21,59 @@ const startGame = () => {
 
     setSnake(initialSnake);
     setFood(initialFood);
+    setCurrentScore(0); // Initialize the score
 
-    // Start the game loop
-const gameLoopInterval = setInterval(() => {
-    // Implement the game logic here
-    // Update snake's position, check for collisions, and update the score
-
-    if (isGameActive) {
-        // Update snake's position based on the current direction (up, down, left, right)
-        // Implement the logic to move the snake here
-        
-        // Check for collisions with walls or itself
-        if (collisionDetected) {
-            // Game over condition
-            clearInterval(gameLoopInterval);
-            setIsGameActive(false);
-            // Add any game over logic here
-            alert(`Game Over! Your score: ${currentScore}`);
-        } else {
-            // Check if the snake eats the food
-            if (snakeAteFood) {
-                // Update the score
-                setCurrentScore(currentScore + 5);
-                
-                // Generate new food position
-                const newFood = getRandomFoodPosition(); // Implement this function
-                
-                // Update the food position
-                setFood(newFood);
-            }
+    // Set up game loop interval
+    const gameLoopInterval = setInterval(() => {
+        // Update snake's position based on the current direction
+        const newSnakeHead = { ...snake[0] };
+        switch (direction) {
+            case 'up':
+                newSnakeHead.y -= 1;
+                break;
+            case 'down':
+                newSnakeHead.y += 1;
+                break;
+            case 'left':
+                newSnakeHead.x -= 1;
+                break;
+            case 'right':
+                newSnakeHead.x += 1;
+                break;
+            default:
+                break;
         }
-    }
-}, 100); // Adjust the interval as needed for your game speed
+
+        // Check for collisions with food
+        if (newSnakeHead.x === food.x && newSnakeHead.y === food.y) {
+            // Snake eats the food
+            const newSnake = [newSnakeHead, ...snake];
+            const newFood = getRandomFoodPosition();
+            setCurrentScore(currentScore + 1); // Increase the score
+            setSnake(newSnake);
+            setFood(newFood);
+        } else {
+            // Move the snake by adding the new head and removing the tail
+            const newSnake = [newSnakeHead, ...snake.slice(0, -1)];
+            setSnake(newSnake);
+        }
+
+        // Check for collisions with walls
+        if (
+            newSnakeHead.x < 0 ||
+            newSnakeHead.x >= canvasSize / boxSize ||
+            newSnakeHead.y < 0 ||
+            newSnakeHead.y >= canvasSize / boxSize
+        ) {
+            handleGameOver();
+        }
+
+        // Check for collisions with itself
+        if (newSnake.some((segment, index) => index !== 0 && segment.x === newSnakeHead.x && segment.y === newSnakeHead.y)) {
+            handleGameOver();
+        }
+    }, 100); // Adjust the interval as needed for your game speed
+
 };
 
     const pauseGame = () => {
