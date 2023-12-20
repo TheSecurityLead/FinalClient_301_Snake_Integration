@@ -87,18 +87,16 @@ function SnakeGame() {
 
         // Check for collisions with food
         if (newHead.x === food.x && newHead.y === food.y) {
-            // Snake eats the food - grow the snake and generate new food
             setHasEatenFood(true);
             setSnake(prev => [newHead, ...prev]);
             setFood(getRandomFoodPosition());
             setCurrentScore(prev => prev + 1);
         } else {
-            // Move the snake - add new head and remove tail
             setSnake(prev => [newHead, ...prev.slice(0, -1)]);
             setHasEatenFood(false);
         }
 
-        // Reset snake turn flag for the next loop
+        
         setHasSnakeTurned(false);
     }, 100);
 };
