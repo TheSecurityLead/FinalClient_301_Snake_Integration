@@ -8,6 +8,10 @@
 -Ekow Yawson
 -Latherio Kidd
 
+## [Render Deploy Link](https://goalease.onrender.com)
+
+## [Netlify Deploy Link]()
+
 ## What is GoalEase Snake Edition?
 
 ### Summary of Idea:
@@ -40,17 +44,17 @@ Game can be created, updated, and deleted.
 Comment is associated with both User and Game and can be added, edited, and deleted.
 Goal is associated with a User and can be created, updated, and deleted.
 
-## Schema
+## Schema Diagram
 
 ![Alt text](image-1.png)
 
-Explanation:
+### Explanation:
 
 -*PK*: Primary Key
 
 -*FK*: Foreign Key
 
-In this schema diagram:
+### In this schema diagram:
 
 Each box represents a table in the database.
 The fields (attributes) of each table are listed within the corresponding box.
