@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { withAuth0 } from '@auth0/auth0-react';
-import getData from '../utils/getData'
+import fetchData from '../utils/getData'
 
 function Dashboard({ auth0 }) {
-  const [data, setData] = useState(null)
-  const [userData, setUserData] = useState(auth0.user || null)
-  // const navigate = useNavigate()
-  // const dispatch = useDispatch()
+  const [userData, setUserData] = useState(null);
 
   async function handleGetData() {
     if (!auth0.isAuthenticated) {
@@ -23,14 +20,13 @@ function Dashboard({ auth0 }) {
       }
 
       let token = claim.__raw;
-      let response = await getData.fetch(token, '/api/goals/dashboard');
-      setData(response);
+      let response = await fetchData(token, '/api/goals/dashboard');
+      setUserData(response);
 
     } catch (error) {
       console.error('Error fetching:', error);
     }
   }
-
 
   useEffect(() => {
     if (auth0.isAuthenticated) {
@@ -46,15 +42,14 @@ function Dashboard({ auth0 }) {
         <Button variant='success' onClick={handleGetData}>Get Your Goals</Button>
 
         {
-          data ? data.map((d, idx) => {
+          Array.isArray(userData) && userData.map((d, idx) => {
             return <p key={d._id}> {d.description} </p>
-          }) : null
+          })
         }
-
       </section>
 
       <section className='content'>
-        <h3>You have not set any goals</h3>
+        {userData && userData.length === 0 && <h3>You have not set any goals</h3>}
       </section>
     </>
   )
