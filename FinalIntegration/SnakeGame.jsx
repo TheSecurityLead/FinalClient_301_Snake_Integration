@@ -12,10 +12,29 @@ function SnakeGame() {
     const [isGameActive, setIsGameActive] = useState(false);
 
     // Game control functions
-    const startGame = () => {
-        setIsGameActive(true);
-        // Add logic to start the game
-    };
+const startGame = () => {
+    setIsGameActive(true);
+
+    // Initialize snake and food positions
+    const initialSnake = [{ x: 10, y: 10 }]; // You can change the initial position
+    const initialFood = getRandomFoodPosition(); // Implement this function
+
+    setSnake(initialSnake);
+    setFood(initialFood);
+
+    // Start the game loop
+    const gameLoopInterval = setInterval(() => {
+        // Implement the game logic here
+        // Update snake's position, check for collisions, and update the score
+
+        // If the game is over, clear the interval
+        if (gameIsOver) {
+            clearInterval(gameLoopInterval);
+            setIsGameActive(false);
+            // Add any game over logic here
+        }
+    }, 100); // Adjust the interval as needed for your game speed
+};
 
     const pauseGame = () => {
         setIsGameActive(false);
