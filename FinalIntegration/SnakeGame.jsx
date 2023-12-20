@@ -23,17 +23,36 @@ const startGame = () => {
     setFood(initialFood);
 
     // Start the game loop
-    const gameLoopInterval = setInterval(() => {
-        // Implement the game logic here
-        // Update snake's position, check for collisions, and update the score
+const gameLoopInterval = setInterval(() => {
+    // Implement the game logic here
+    // Update snake's position, check for collisions, and update the score
 
-        // If the game is over, clear the interval
-        if (gameIsOver) {
+    if (isGameActive) {
+        // Update snake's position based on the current direction (up, down, left, right)
+        // Implement the logic to move the snake here
+        
+        // Check for collisions with walls or itself
+        if (collisionDetected) {
+            // Game over condition
             clearInterval(gameLoopInterval);
             setIsGameActive(false);
             // Add any game over logic here
+            alert(`Game Over! Your score: ${currentScore}`);
+        } else {
+            // Check if the snake eats the food
+            if (snakeAteFood) {
+                // Update the score
+                setCurrentScore(currentScore + 5);
+                
+                // Generate new food position
+                const newFood = getRandomFoodPosition(); // Implement this function
+                
+                // Update the food position
+                setFood(newFood);
+            }
         }
-    }, 100); // Adjust the interval as needed for your game speed
+    }
+}, 100); // Adjust the interval as needed for your game speed
 };
 
     const pauseGame = () => {
