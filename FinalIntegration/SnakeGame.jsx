@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import GameBoard from './GameBoard';
-import ScoreBoard from './ScoreBoard';
-import ControlPanel from './ControlPanel';
+import GameControlsAndScore from './GameControlsAndScore';
 import SoundManager from './SoundManager';
 
 function SnakeGame() {
