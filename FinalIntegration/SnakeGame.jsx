@@ -53,11 +53,55 @@ function SnakeGame() {
         setFood(initialFood);
         setCurrentScore(0);
 
-        gameLoopIntervalRef.current = setInterval(() => {
-            // Game loop logic here
-            // ...
-        }, 100);
-    };
+    gameLoopIntervalRef.current = setInterval(() => {
+        // Update the snake's head position based on the current direction
+        const newHead = { ...snake[0] };
+        switch (direction.current) {
+            case 'up':
+                newHead.y -= boxSize;
+                break;
+            case 'down':
+                newHead.y += boxSize;
+                break;
+            case 'left':
+                newHead.x -= boxSize;
+                break;
+            case 'right':
+                newHead.x += boxSize;
+                break;
+            default:
+                break;
+        }
+
+        // Check for collisions with walls
+        if (newHead.x < 0 || newHead.x >= canvasSize || newHead.y < 0 || newHead.y >= canvasSize) {
+            handleGameOver();
+            return;
+        }
+
+        // Check for collisions with itself
+        if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+            handleGameOver();
+            return;
+        }
+
+        // Check for collisions with food
+        if (newHead.x === food.x && newHead.y === food.y) {
+            // Snake eats the food - grow the snake and generate new food
+            setHasEatenFood(true);
+            setSnake(prev => [newHead, ...prev]);
+            setFood(getRandomFoodPosition());
+            setCurrentScore(prev => prev + 1);
+        } else {
+            // Move the snake - add new head and remove tail
+            setSnake(prev => [newHead, ...prev.slice(0, -1)]);
+            setHasEatenFood(false);
+        }
+
+        // Reset snake turn flag for the next loop
+        setHasSnakeTurned(false);
+    }, 100);
+};
 
     const pauseGame = () => {
         setIsGameActive(false);
