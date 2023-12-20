@@ -1,4 +1,3 @@
-
 // import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
@@ -19,11 +18,8 @@ function App({ auth0 }) {
   //   }
   // }, [auth0.isAuthenticated]);
 
-
-function App() {
   return (
     <>
-
       {/* AUTHBUTTON FOR AUTH0 LOGIN */}
       <AuthButtons />
 
@@ -35,7 +31,6 @@ function App() {
             {/* {auth0.isAuthenticated && <Route path='/comments' element={<Comments />} />}
             {auth0.isAuthenticated && <Route path='/login' element={<Login />} />}
             {auth0.isAuthenticated && <Route path='/register' element={<Register />} />} */}
-
           </Routes>
         </div>
       </Router>
