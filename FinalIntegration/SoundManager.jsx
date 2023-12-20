@@ -1,49 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-function SoundManager({ soundEnabled }) {
-  
-  const [isPlayingSound, setIsPlayingSound] = useState(false);
-
-  // Initialize audio elements
+function SoundManager({ soundEnabled, isGameOver, hasEatenFood, isGameStarted, hasSnakeTurned }) {
+  // Audio elements
   const gameOverSound = new Audio('audio/game-over.mp3');
   const gameStartSound = new Audio('audio/game-start.mp3');
   const snakeTurnSound = new Audio('audio/snake-turn.mp3');
   const snakeEatAppleSound = new Audio('audio/snake-eat-apple.mp3');
 
-  // Set volume for gameStartSound
+  // Set volume for sounds
   gameStartSound.volume = 0.35;
+  // ... Set volume for other sounds as needed
 
-  // Function to play a sound
+  // Function to handle audio playback
   const playSound = (audio) => {
     if (soundEnabled) {
-      setIsPlayingSound(true);
       audio.play();
     }
   };
 
-  // useEffect to handle sound effects
+  // Handle game over sound
   useEffect(() => {
-    // When a sound effect finishes playing, reset isPlayingSound to false
-    const handleSoundEnd = () => {
-      setIsPlayingSound(false);
+    if (soundEnabled && isGameOver) {
+      playSound(gameOverSound);
+    }
+  }, [soundEnabled, isGameOver]);
+
+  // Handle snake eating food sound
+  useEffect(() => {
+    if (soundEnabled && hasEatenFood) {
+      playSound(snakeEatAppleSound);
+    }
+  }, [soundEnabled, hasEatenFood]);
+
+  // Handle game start sound
+  useEffect(() => {
+    if (soundEnabled && isGameStarted) {
+      playSound(gameStartSound);
+    }
+  }, [soundEnabled, isGameStarted]);
+
+  // Handle snake turn sound
+  useEffect(() => {
+    if (soundEnabled && hasSnakeTurned) {
+      playSound(snakeTurnSound);
+    }
+  }, [soundEnabled, hasSnakeTurned]);
+
+  // Error handling for sound files
+  useEffect(() => {
+    const handleError = (e) => {
+      console.error("Error loading sound file: ", e);
+      // Additional error handling logic here
     };
 
-    // Add event listeners to audio elements for handling sound ends
-    gameOverSound.addEventListener('ended', handleSoundEnd);
-    gameStartSound.addEventListener('ended', handleSoundEnd);
-    snakeTurnSound.addEventListener('ended', handleSoundEnd);
-    snakeEatAppleSound.addEventListener('ended', handleSoundEnd);
+    gameOverSound.addEventListener('error', handleError);
+    gameStartSound.addEventListener('error', handleError);
+    snakeTurnSound.addEventListener('error', handleError);
+    snakeEatAppleSound.addEventListener('error', handleError);
 
-    // Clean up event listeners when component unmounts
     return () => {
-      gameOverSound.removeEventListener('ended', handleSoundEnd);
-      gameStartSound.removeEventListener('ended', handleSoundEnd);
-      snakeTurnSound.removeEventListener('ended', handleSoundEnd);
-      snakeEatAppleSound.removeEventListener('ended', handleSoundEnd);
+      gameOverSound.removeEventListener('error', handleError);
+      gameStartSound.removeEventListener('error', handleError);
+      snakeTurnSound.removeEventListener('error', handleError);
+      snakeEatAppleSound.removeEventListener('error', handleError);
     };
   }, []);
 
-  
   return null;
 }
 
