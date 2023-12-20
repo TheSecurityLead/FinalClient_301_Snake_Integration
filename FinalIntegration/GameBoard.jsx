@@ -1,7 +1,21 @@
 import React, { useRef, useEffect } from 'react';
 
-function GameBoard({ snake, food, onGameUpdate }) {
+function GameBoard({ snake, food, canvasWidth, canvasHeight }) {
     const canvasRef = useRef(null);
+
+    // Function to draw the snake
+    const drawSnake = (ctx) => {
+        ctx.fillStyle = 'green';
+        snake.forEach(segment => {
+            ctx.fillRect(segment.x, segment.y, 20, 20); // Adjust size as needed
+        });
+    };
+
+    // Function to draw the food
+    const drawFood = (ctx) => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(food.x, food.y, 20, 20); // Adjust size as needed
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -10,24 +24,26 @@ function GameBoard({ snake, food, onGameUpdate }) {
         // Clear the canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Draw the snake
-        snake.forEach(segment => {
-            ctx.fillStyle = 'green';
-            ctx.fillRect(segment.x, segment.y, 10, 10); // Adjust size as needed
-        });
+        // Draw the snake and food
+        drawSnake(ctx);
+        drawFood(ctx);
 
-        // Draw the food
-        ctx.fillStyle = 'red';
-        ctx.fillRect(food.x, food.y, 10, 10); // Adjust size as needed
-
-        // Any additional drawing logic goes here
     }, [snake, food]);
+
+    // Responsive canvas size
+    const resizeCanvas = () => {
+        const width = Math.min(window.innerWidth, canvasWidth);
+        const height = Math.min(window.innerHeight, canvasHeight);
+        return { width, height };
+    };
+
+    const { width, height } = resizeCanvas();
 
     return (
         <canvas
             ref={canvasRef}
-            width={600} // Adjust size as needed
-            height={400} // Adjust size as needed
+            width={width}
+            height={height}
             style={{ border: '1px solid black' }}
         />
     );
