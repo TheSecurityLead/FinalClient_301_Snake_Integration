@@ -1,62 +1,69 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import GoalForm from '../components/GoalForm'
-import GoalItem from '../components/GoalItem'
-import Spinner from '../components/Spinner'
-import { getGoals, reset } from '../features/goals/goalSlice'
 
-function Dashboard() {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
+import { withAuth0 } from '@auth0/auth0-react';
+import getData from '../utils/getData'
 
-  const { user } = useSelector((state) => state.auth)
-  const { goals, isLoading, isError, message } = useSelector(
-    (state) => state.goals
-  )
+function Dashboard({ auth0 }) {
+  const [data, setData] = useState(null)
+  const [userData, setUserData] = useState(auth0.user || null)
+  // const navigate = useNavigate()
+  // const dispatch = useDispatch()
+
+  async function handleGetData() {
+    if (!auth0.isAuthenticated) {
+      console.log('User is not authenticated.');
+      return;
+    }
+
+    try {
+      let claim = await auth0.getIdTokenClaims();
+      if (!claim) {
+        console.log('Token claim is undefined.');
+        return;
+      }
+
+      let token = claim.__raw;
+      let response = await getData.fetch(token, '/api/goals/dashboard');
+      setData(response);
+
+    } catch (error) {
+      console.error('Error fetching dogs:', error);
+    }
+  }
+
 
   useEffect(() => {
-    if (isError) {
-      console.log(message)
+    if (auth0.isAuthenticated) {
+      handleGetData();
     }
+  }, [auth0.isAuthenticated]);
 
-    if (!user) {
-      navigate('/login')
-    }
-
-    dispatch(getGoals())
-
-    return () => {
-      dispatch(reset())
-    }
-  }, [user, navigate, isError, message, dispatch])
-
-  if (isLoading) {
-    return <Spinner />
-  }
 
   return (
     <>
       <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dashboard</p>
+
+        {userData ? <h1>Welcome {userData.name}</h1> : null}
+        <h3>Goals Dashboard</h3>
+        <Button variant='success' onClick={handleGetData}>Get Your Goals</Button>
+
+        {
+          data ? data.map((d, idx) => {
+            return <p key={d._id}> {d.description} </p>
+          }) : null
+        }
+
       </section>
 
-      <GoalForm />
-
       <section className='content'>
-        {goals.length > 0 ? (
-          <div className='goals'>
-            {goals.map((goal) => (
-              <GoalItem key={goal._id} goal={goal} />
-            ))}
-          </div>
-        ) : (
-          <h3>You have not set any goals</h3>
-        )}
+        <h3>You have not set any goals</h3>
+
       </section>
     </>
   )
 }
 
-export default Dashboard
+
+export default withAuth0(Dashboard)
+
