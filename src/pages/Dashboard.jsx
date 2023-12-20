@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { withAuth0 } from '@auth0/auth0-react';
@@ -38,9 +39,11 @@ function Dashboard({ auth0 }) {
     }
   }, [auth0.isAuthenticated]);
 
+
   return (
     <>
       <section className='heading'>
+
         {userData ? <h1>Welcome {userData.name}</h1> : null}
         <h3>Goals Dashboard</h3>
         <Button variant='success' onClick={handleGetData}>Get Your Goals</Button>
@@ -55,9 +58,12 @@ function Dashboard({ auth0 }) {
 
       <section className='content'>
         <h3>You have not set any goals</h3>
+
       </section>
     </>
   )
 }
 
+
 export default withAuth0(Dashboard)
+

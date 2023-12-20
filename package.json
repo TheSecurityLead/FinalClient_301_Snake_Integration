@@ -1,4 +1,5 @@
 {
+
   "name": "client",
   "version": "0.0.0",
   "lockfileVersion": 3,
@@ -23930,5 +23931,6 @@
         "url": "https://github.com/sponsors/sindresorhus"
       }
     }
+
   }
 }
