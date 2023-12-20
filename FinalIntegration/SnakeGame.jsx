@@ -95,6 +95,19 @@ const startGame = () => {
 
     return (
         <div>
+      {/* Include the SoundManager component */}
+      <SoundManager soundEnabled={soundEnabled} />
+      <ScoreBoard currentScore={currentScore} highScore={highScore} />
+      <GameBoard snake={snake} food={food} />
+      <ControlPanel
+        onStart={startGame}
+        onPause={pauseGame}
+        onReset={resetGame}
+        onToggleSound={() => setSoundEnabled(!soundEnabled)}
+        soundEnabled={soundEnabled}
+      />
+    </div>
+        <div>
             <ScoreBoard currentScore={currentScore} highScore={highScore} />
             <GameBoard snake={snake} food={food} />
             <ControlPanel onStart={startGame} onPause={pauseGame} onReset={resetGame} />
